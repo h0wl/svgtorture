@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:scalable_vector_graphics="http://www.w3.org/2000/svg" 
+     version="1.1">
+    <desc>This test should show a green circle. No red should be visible. This test shows how
+          WebKit fails to properly interpret scientific notation to proper digits of precision.
+    </desc>
+
+    <g id="right-eye-defn">
+        <circle cx="120" cy="180" r="35" fill="red" stroke="red" stroke-width="5" />
+        <ellipse cx="120" cy="180" rx="0.00000038E+8" ry="+3800000000e-8" fill="lime"/>
+    </g>
+
+</svg>

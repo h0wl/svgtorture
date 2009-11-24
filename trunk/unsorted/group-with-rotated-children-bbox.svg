@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<title>Bounding box for groups with rotated elements</title>
+	<desc>
+		This test determines whether the user agent correctly calculates the bounding box of a group that contains rotated elements.  The ellipse should be tightly enclosed with a green rect.  No red should be present.
+		
+		According to http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox:
+	
+		"The bounding box is the tightest fitting rectangle aligned with the axes of the applicable element's user coordinate system that entirely encloses the applicable element and its descendants"
+		
+		Firefox gets this right, but Opera and WebKit return the tightest axis-aligned rectangle that encloses the applicable elements and its descendants bboxes.  In this case, the ellipse is not tightly enclosed because the rotated ellipse's bounding box corners 'poke' it out.
+		
+		Firefox: 161.9140625,161.9140625,76.1640625,76.1640625
+		Opera: 150.50253295898438,150.50253295898438,98.99493408203125,98.99493408203125
+		WebKit: 150.5025177001953,150.5025177001953,98.99496459960938,98.99496459960938
+	</desc>
+	
+	<g id="g" fill="red">
+		<ellipse cx="200" cy="200" rx="50" ry="20" transform="rotate(45,200,200)"/>
+	</g>
+	<rect x="150" y="180" width="100" height="40" fill="none" stroke="black" transform="rotate(45,200,200)"/>
+	<rect id="bbox" fill="none" stroke="red" stroke-width="2"/>
+	<script><![CDATA[
+		var g = document.getElementById("g");
+		var r = document.getElementById("bbox");
+		var box = g.getBBox();
+		
+		r.setAttribute("x", box.x);
+		r.setAttribute("y", box.y);
+		r.setAttribute("width", box.width);
+		r.setAttribute("height", box.height);
+		
+		if (parseInt(box.x) == 161 && parseInt(box.y) == 161 && parseInt(box.width) == 76 && parseInt(box.height) == 76) {
+			r.setAttribute("stroke", "lime");
+			g.setAttribute("fill", "lime");
+		}
+	]]></script>
+</svg>
+

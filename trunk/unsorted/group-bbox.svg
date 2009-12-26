@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <desc>This tests whether the browser returns a proper bbox for a group with elements that have been moved.  The browser should show a green rectangle.  Anything else is a failure</desc>
+  <g id="g">
+    <rect id="r" x="10" y="10" width="200" height="100" fill="red"/>
+  </g>
+  <script><![CDATA[
+  	var svgroot = document.documentElement;
+    var r = document.getElementById("r");
+    var g = document.getElementById("g");
+    var prebox = g.getBBox();
+    r.setAttribute("x", "300");
+    r.setAttribute("y", "300");
+
+    var postbox = g.getBBox();
+    
+    /************************************************************************
+    //WORKAROUND:
+    //- create a new group, add all children to it, replace old group with it
+    //************************************************************************
+    var newg = document.createElement("g");
+    while (g.firstChild) { newg.appendChild(g.firstChild); }
+    var i = g.attributes.length;
+    while(i--) { newg.setAttributeNode(g.attributes.item(i).cloneNode(true)); }
+    svgroot.appendChild(newg);
+    var oldg = g;
+    g = newg;
+    postbox = g.getBBox();
+    while (g.firstChild) { oldg.appendChild(g.firstChild); }
+    //************************************************************************/
+
+    if (prebox.x == 10 && prebox.y == 10 && prebox.width == 200 && prebox.height == 100 &&
+        postbox.x == 300 && postbox.y == 300 && postbox.width == 200 && postbox.height == 100) 
+    {
+      r.setAttribute("fill", "green");
+    }
+  ]]></script>
+</svg>

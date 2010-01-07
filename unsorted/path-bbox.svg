@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<title>Bounding box for paths with cubic bezier curves</title>
+	<desc>
+		This test determines whether the user agent correctly calculates the bounding box of a path with bezier curves.  The path should be tightly enclosed with a green rect.  No red should be present.
+		
+		According to http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox:
+		
+		"The bounding box is the tightest fitting rectangle aligned with the axes of the applicable element's user coordinate system that entirely encloses the applicable element and its descendants"
+		
+		Firefox and Opera get this right, but WebKit returns the tightest axis-aligned rectangle that encloses all points of the path, including the control points used to create the curved segments.
+	</desc>
+	
+	<path id="path" d="M40.5,91 C18,83.75 32.5,38.75 55,46 C68.5,29.75 101,56.75 87.5,73 C96.5,96.5 49.5,114.5 40.5,91 z" fill="red" />
+
+	<rect id="bbox" width="0" height="0" fill="none" stroke="red" stroke-width="2"/>
+	<script><![CDATA[
+		var path = document.getElementById("path");
+		var r = document.getElementById("bbox");
+		var box = path.getBBox();
+		
+		r.setAttribute("x", box.x);
+		r.setAttribute("y", box.y);
+		r.setAttribute("width", box.width);
+		r.setAttribute("height", box.height);
+		
+		if (parseInt(box.x) == 29 && parseInt(box.y) == 40 && parseInt(box.width) == 61 && parseInt(box.height) == 61) {
+			r.setAttribute("stroke", "lime");
+			path.setAttribute("fill", "lime");
+		}
+	]]></script>
+</svg>

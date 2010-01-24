@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<desc>This tests to ensure that style rules are not passed down to the shadow tree 
+      of a use element.  It should show a single green circle.  Test adapted from
+      https://bugzilla.mozilla.org/show_bug.cgi?id=265894</desc>
+<style>
+	#g circle { fill: red; }
+</style>
+<defs>
+	<circle id="c" cx="100" cy="100" r="40" fill="green" />
+</defs>
+<g id="g">
+	<use xlink:href="#c"/>
+</g>
+</svg>

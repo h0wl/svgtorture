@@ -1,6 +1,7 @@
+<?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
 <desc>This test is run within object-proper-size.html and tests whether the 
       object SVG frame is the proper size or not.  The green circle should be
-      visible.</desc>
+      visible.  See http://www.w3.org/TR/SVG11/coords.html#ViewportSpace</desc>
 <circle cx="450" cy="450" r="100" fill="green"/>
 </svg>

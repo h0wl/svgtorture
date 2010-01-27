@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg">
+<desc>This tests the ability to add animation elements dynamically
+      and have the animations take effect.  The circle should be 
+      green, not red.</desc>
+<script><![CDATA[
+	var svgroot = document.documentElement,
+		SVGNS = "http://www.w3.org/2000/svg",
+		c = document.createElementNS(SVGNS, "circle"),
+		a = document.createElementNS(SVGNS, "animate");
+
+		c.setAttribute("cx", "200");
+		c.setAttribute("cy", "200");
+		c.setAttribute("r", "80");
+		c.setAttribute("fill", "red");
+		
+		a.setAttribute("attributeName", "fill");
+		a.setAttribute("to", "green");
+		a.setAttribute("begin", "0s");
+		a.setAttribute("fill", "freeze");
+		
+		c.appendChild(a);
+		svgroot.appendChild(c);
+]]></script>
+</svg>

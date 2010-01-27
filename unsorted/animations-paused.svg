@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg">
+<desc>This tests the animationsPaused flag on the SVGSVGElement
+      interface.  The circle should be green, not red.</desc>
+<circle id="c" cx="200" cy="200" r="80" fill="none"/>
+<script><![CDATA[
+	var svgroot = document.documentElement,
+		c = document.getElementById("c");
+
+	try {
+		// pause all animations and set the current timeline
+		// to after the circle should turn green
+		svgroot.pauseAnimations();
+		c.setAttribute("fill", svgroot.animationsPaused() == true ? "green" : "red");
+	} catch(e) {c.setAttribute("fill", "red");}
+]]></script>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<desc>
+		This test should show a green circle. No red should be visible. This test shows how
+		WebKit fails to properly interpret scientific notation to proper digits of precision.
+	</desc>
+	
+	<circle cx="100" cy="100" r="40" fill="red"/>
+	
+	<foreignObject x="0" y="0" width="200" height="200">
+		<svg xmlns="http://www.w3.org/2000/svg">
+			<circle cx="100" cy="100" r="41" fill="green"/>
+		</svg>
+	</foreignObject>
+	
+</svg>

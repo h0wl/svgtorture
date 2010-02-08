@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>Radial Gradient with userSpaceOnUse</title>
+    <style type="text/css">
+        body { background: white; }
+        object { border: 0; }
+        table, td, tr { border: 0; }
+    </style>
+</head>
+<body>
+<h1>Radial Gradient</h1>
+
+<p>Testing the display of radial gradient on a set of circles when <code>gradientUnits</code> is set to
+<em>userSpaceOnUse</em>.</p>
+
+<table>
+    <tr>
+        <td colspan="2">A field of circles with gradient set on whole image</td>
+    </tr>
+    <tr>
+        <td><object width="400" height="400" type="image/svg+xml" data="radial_gradient_usou.svg"></object></td>
+        <td><img width="400" height="400" src="radial_gradient_usou.png" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">4 <code>svg</code> elements duplicating the image</td>
+    </tr>
+    <tr>
+        <td><object width="400" height="400" type="image/svg+xml" data="radial_gradient_usou-svg.svg"></object></td>
+        <td><img width="400" height="400" src="radial_gradient_usou-svg.png" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">4 <code>use</code> elements placing the same image</td>
+    </tr>
+    <tr>
+        <td><object width="400" height="400" type="image/svg+xml" data="radial_gradient_usou-use.svg"></object></td>
+        <td><img width="400" height="400" src="radial_gradient_usou-use.png" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">4 <code>g</code> elements translated into position</td>
+    </tr>
+    <tr>
+        <td><object width="400" height="400" type="image/svg+xml" data="radial_gradient_usou-trans.svg"></object></td>
+        <td><img width="400" height="400" src="radial_gradient_usou-trans.png" /></td>
+    </tr>
+</table>
+</body>
+</html>

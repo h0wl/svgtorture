@@ -1,0 +1,28 @@
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Use "replaceItem" on the points of a polyline</title>
+  <desc>
+  	Points of a polyline ought to be editable using its "points". 
+  	points.replaceItem should replace a given point with another one.
+  	
+  	If this test is succesful, only a green diagonal polyline should be visible.
+  	No red should be visible.
+
+  </desc>
+  <polyline points="100,100 200,200" stroke="red" stroke-width="5" id="p" />
+  <polyline points="100,100 200,100" stroke="lime" stroke-width="10" stroke-linecap="round" id="p2" />
+  <script><![CDATA[
+		var root = document.documentElement;
+	   	var p2 = document.getElementById("p2");
+	  
+	  	var pts = p2.points;
+		var pt = root.createSVGPoint();
+		pt.x = 200;
+		pt.y = 200;
+		pts.replaceItem(pt, 1);
+		
+		// Just to make sure the "points" attribute has been correctly updated
+		var points = p2.getAttribute('points');
+		p2.setAttribute('points', points);
+
+  ]]></script>
+</svg>

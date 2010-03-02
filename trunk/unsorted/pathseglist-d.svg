@@ -1,0 +1,36 @@
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Getting the "d" attribute of a path manipulated by its pathSegList</title>
+  <desc>
+  
+  When a path is manipulated using pathSegList, the "d" attribute should reflect
+  the changes. This test takes the "d" attribute from one path after manipulation,
+  then applies it to another (green) path, which should fully cover the original.
+  
+  The test fails if the new path does not exactly match the original, in which
+  case the red path would still be visible.
+  
+  </desc>
+  <path d="M100,100 L100,200 L200,200" fill="red" id="p" />
+  <script><![CDATA[
+
+	   	var p = document.getElementById("p");
+	   	var list = p.pathSegList;
+		
+		// Add a segment, remove a segment
+		var seg = p.createSVGPathSegLinetoAbs(200, 100);
+		list.insertItemBefore(seg, 1);
+		list.removeItem(2);
+		
+		// The "d" attribute is taken after the path was manipulated
+		var d = p.getAttribute('d');
+		
+		var clone = p.cloneNode(true);
+		clone.setAttribute('fill', 'lime');
+		clone.setAttribute('d', d);
+		
+		// This path should now match the other path
+		p.parentNode.appendChild(clone);
+		
+		
+  ]]></script>
+</svg>

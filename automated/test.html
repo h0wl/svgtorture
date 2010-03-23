@@ -1,0 +1,231 @@
+<!doctype html>
+<html>  
+<head>  
+	<title>SVG DOM 1.1 conformance tests</title>
+  <link rel="stylesheet" href="qunit/qunit.css" type="text/css"/>  
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="qunit/qunit.js"></script>  
+  <script type="text/javascript">
+  $(function() {
+  	// log function
+  	QUnit.log = function(result, message) {
+		if (window.console && window.console.log) {
+			window.console.log(result +' :: '+ message);
+		}
+	};
+	var svgroot;
+	var svgns = 'http://www.w3.org/2000/svg';
+	(function() {
+		var od = $("#svg")[0].ownerDocument;
+		svgroot = od.createElementNS(svgns, "svg");
+		svgroot.setAttribute("width", 100);
+		svgroot.setAttribute("height", 100);
+		svgroot.setAttribute("xmlns", svgns);
+		$("#svg").append(svgroot);
+	}());
+	
+	function makeEl(name) {
+		var el = document.createElementNS(svgns, name);
+		svgroot.appendChild(el);
+		return el;
+	}
+	
+	function empty() {
+		while(svgroot.childNodes.length) {
+			svgroot.removeChild(svgroot.childNodes[0]);
+		}
+	}
+	
+
+	module("DOM manipulation");
+	
+	test("Can do basic node editing", 2, function() {
+		empty();
+		var rect = makeEl("rect");
+		ok((rect.parentNode == svgroot), "Can add a <rect/>");
+		
+		rect.parentNode.removeChild(rect);
+		ok((svgroot.childNodes.length == 0), "Can remove a <rect/>");
+		
+		// TODO Add more basic DOM tests here
+	});
+
+	module("getBBox()");
+
+	test("getBBox (basic)", function() {
+		expect(3);
+		
+		var el = makeEl('rect');
+
+		el.setAttribute("x", 5);
+		el.setAttribute("y", 6);
+		el.setAttribute("width", 7);
+		el.setAttribute("height", 8);
+		ok(el.getBBox, "Claims to support getBBox on a <rect/>");
+		
+		var bb = el.getBBox();
+		var xy = bb?(bb.x == 5 && bb.y == 6):false;
+		var wh = bb?(bb.width == 7 && bb.height == 8):false;
+		
+		ok(xy, "Gives correct getBBox x/y values on a <rect/>");
+		ok(wh, "Gives correct getBBox width/height values on a <rect/>");
+	});
+	
+	module("SVGPointList");
+	
+	(function() {
+		empty();
+	
+		var polyline = makeEl('polyline');
+		var polygon = makeEl('polygon');
+	
+		var pts;
+		var resetList = function() {
+			polyline.setAttribute("points", "5,6 10,11");
+			pts = polyline.points;
+		}
+		
+		var makePt = function(x, y) {
+			var pt = svgroot.createSVGPoint();
+			pt.x = x;
+			pt.y = y;
+			return pt;
+		}
+
+		test("Claims support for SVGPointList", 2, function() {
+			ok(polyline.points, "polyline has 'points' property");
+			ok(polygon.points, "polygon has 'points' property");
+		});
+
+		test("Can create SVGPoint", 1, function() {
+			ok(!!makePt(0, 0), "Created point with createSVGPoint()");
+		});
+		
+		resetList();
+
+		test("Returns correct value for numberOfItems", 2, function() {
+			ok("numberOfItems" in pts, "SVGPointList has 'numberOfItems' property");
+			ok(pts.numberOfItems === 2, "numberOfItems value is correct");
+		});		
+
+		test("Supports getItem()", 2, function() {
+			ok("getItem" in pts, "SVGPointList has 'getItem' property");
+			
+			var item = pts.getItem(0);
+			ok((item.x == 5 && item.y == 6), "getItem() values are correct");
+		});
+
+		test("Supports appendItem()", 2, function() {
+			resetList();
+			
+			ok("appendItem" in pts, "SVGPointList has 'appendItem' property");
+			
+			pts.appendItem(makePt(1, 2));
+
+			if(pts.numberOfItems === 3) {
+				var item = pts.getItem(2);
+			} else {
+				var item = false;
+			}
+
+			ok(item && item.x == 1 && item.y == 2, "getItem() values are correct");
+		});
+
+		test("Supports insertItemBefore()", 2, function() {
+			resetList();
+
+			ok("insertItemBefore" in pts, "SVGPointList has 'insertItemBefore' property");
+			
+			pts.insertItemBefore(makePt(1, 2), 0);
+
+			var item = pts.getItem(0);
+			ok(item.x == 1 && item.y == 2 && pts.numberOfItems === 3, "Supports insertItemBefore()");
+		});
+		
+		test("Supports removeItem()", 2, function() {
+			resetList();
+	
+			ok("removeItem" in pts, "SVGPointList has 'removeItem' property");
+			
+			pts.removeItem(1);
+			
+			ok(pts.numberOfItems === 1, "Supports removeItem()");
+		});			
+		
+		test("Supports replaceItem()", 2, function() {
+			resetList();
+			
+			ok("replaceItem" in pts, "SVGPointList has 'replaceItem' property");
+			
+			pts.replaceItem(makePt(1, 2), 1);
+			var item = pts.getItem(1);
+			ok((item.x == 1 && item.y == 2) && pts.numberOfItems == 2, "Supports replaceItem()");
+		});		
+		
+		test("Supports clear()", 2, function() {
+			resetList();
+			
+			ok("clear" in pts, "SVGPointList has 'clear' property");
+			
+			pts.clear();
+			ok(pts.numberOfItems == 0, "Supports clear()");
+		});		
+		
+		test("Supports initialize()", 2, function() {
+			resetList();
+			
+			ok("initialize" in pts, "SVGPointList has 'initialize' property");
+			
+			pts.initialize(makePt(2,3));
+			var item = pts.numberOfItems == 1 ? pts.getItem(0) : false;
+			ok(item && item.x == 2 && item.y == 3, "Supports initialize()");
+		});		
+	}());
+	
+	module("SVGPathSegList");
+	
+	(function() {
+		empty();
+		
+		var path = makeEl('path');
+		
+		var resetList = function() {
+			polyline.setAttribute("points", "5,6 10,11");
+			pts = polyline.points;
+		}
+
+		test("Claims support for SVGPathSegList", 2, function() {
+			ok("pathSegList" in , "polyline has 'points' property");
+			ok(polygon.points, "polygon has 'points' property");
+		});
+
+		test("PathSegList interface", 1, function() {
+			ok(makeEl('path'), "Claims to support 'pathSegList' interface for <path/>");
+		});
+		
+	}());
+	
+	
+
+	
+	module("SVGTransform");
+	
+	test("Transform interface", 2,function() {
+		var el = makeEl('rect');
+		ok(el.transform, "Claims to support 'transform' interface for <rect/>");
+		ok(el.transform.baseVal, "Claims to support 'transform.baseVal' interface for <rect/>");
+	});
+
+	
+  }); 
+  </script>  
+</head>  
+<body>  
+  <h1 id="qunit-header">SVG DOM 1.1 conformance tests</h1>
+  <h2 id="qunit-banner"></h2>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests">
+  </ol>
+  <div id="svg" style="visibility:hidden;position:absolute;overflow:hidden;"></div>
+</body>  
+</html> 

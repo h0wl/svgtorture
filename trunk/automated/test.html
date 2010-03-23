@@ -101,9 +101,8 @@
 			ok(!!makePt(0, 0), "Created point with createSVGPoint()");
 		});
 		
-		resetList();
-
 		test("Returns correct value for numberOfItems", 2, function() {
+			resetList();
 			ok("numberOfItems" in pts, "SVGPointList has 'numberOfItems' property");
 			ok(pts.numberOfItems === 2, "numberOfItems value is correct");
 		});		
@@ -128,7 +127,7 @@
 				var item = false;
 			}
 
-			ok(item && item.x == 1 && item.y == 2, "getItem() values are correct");
+			ok(item && item.x == 1 && item.y == 2, "Supports appendItem()");
 		});
 
 		test("Supports insertItemBefore()", 2, function() {
@@ -182,31 +181,118 @@
 		});		
 	}());
 	
-// 	module("SVGPathSegList");
-// 	
-// 	(function() {
-// 		empty();
-// 		
-// 		var path = makeEl('path');
-// 		
-// 		var resetList = function() {
-// 			polyline.setAttribute("points", "5,6 10,11");
-// 			pts = polyline.points;
-// 		}
-// 
-// 		test("Claims support for SVGPathSegList", 2, function() {
-// 			ok("pathSegList" in , "polyline has 'points' property");
-// 			ok(polygon.points, "polygon has 'points' property");
-// 		});
-// 
-// 		test("PathSegList interface", 1, function() {
-// 			ok(makeEl('path'), "Claims to support 'pathSegList' interface for <path/>");
-// 		});
-// 		
-// 	}());
-	
-	
 
+	module("SVGPathSegList");
+
+// interface SVGPathSegList { 
+//   readonly attribute unsigned long numberOfItems;
+//   void   clear (  )
+//                   raises( DOMException );
+//   SVGPathSeg initialize ( in SVGPathSeg newItem )
+//                   raises( DOMException, SVGException );
+//   SVGPathSeg getItem ( in unsigned long index )
+//                   raises( DOMException );
+//   SVGPathSeg insertItemBefore ( in SVGPathSeg newItem, in unsigned long index )
+//                   raises( DOMException, SVGException );
+//   SVGPathSeg replaceItem ( in SVGPathSeg newItem, in unsigned long index )
+//                   raises( DOMException, SVGException );
+//   SVGPathSeg removeItem ( in unsigned long index )
+//                   raises( DOMException );
+//   SVGPathSeg appendItem ( in SVGPathSeg newItem )
+//                   raises( DOMException, SVGException );
+// };
+
+// interface SVGPathElement : 
+//                 SVGElement,
+//                 SVGTests,
+//                 SVGLangSpace,
+//                 SVGExternalResourcesRequired,
+//                 SVGStylable,
+//                 SVGTransformable,
+//                 events::EventTarget,
+//                 SVGAnimatedPathData { 
+//   readonly attribute SVGAnimatedNumber pathLength;
+//   float         getTotalLength (  );
+//   SVGPoint      getPointAtLength ( in float distance );
+//   unsigned long getPathSegAtLength ( in float distance );
+//   SVGPathSegClosePath    createSVGPathSegClosePath (  );
+//   SVGPathSegMovetoAbs    createSVGPathSegMovetoAbs ( in float x, in float y );
+//   SVGPathSegMovetoRel    createSVGPathSegMovetoRel ( in float x, in float y );
+//   SVGPathSegLinetoAbs    createSVGPathSegLinetoAbs ( in float x, in float y );
+//   SVGPathSegLinetoRel    createSVGPathSegLinetoRel ( in float x, in float y );
+//   SVGPathSegCurvetoCubicAbs    createSVGPathSegCurvetoCubicAbs ( in float x, in float y, in float x1, in float y1, in float x2, in float y2 );
+//   SVGPathSegCurvetoCubicRel    createSVGPathSegCurvetoCubicRel ( in float x, in float y, in float x1, in float y1, in float x2, in float y2 );
+//   SVGPathSegCurvetoQuadraticAbs    createSVGPathSegCurvetoQuadraticAbs ( in float x, in float y, in float x1, in float y1 );
+//   SVGPathSegCurvetoQuadraticRel    createSVGPathSegCurvetoQuadraticRel ( in float x, in float y, in float x1, in float y1 );
+//   SVGPathSegArcAbs    createSVGPathSegArcAbs ( in float x, in float y, in float r1, in float r2, in float angle, in boolean largeArcFlag, in boolean sweepFlag );
+//   SVGPathSegArcRel    createSVGPathSegArcRel ( in float x, in float y, in float r1, in float r2, in float angle, in boolean largeArcFlag, in boolean sweepFlag );
+//   SVGPathSegLinetoHorizontalAbs    createSVGPathSegLinetoHorizontalAbs ( in float x );
+//   SVGPathSegLinetoHorizontalRel    createSVGPathSegLinetoHorizontalRel ( in float x );
+//   SVGPathSegLinetoVerticalAbs    createSVGPathSegLinetoVerticalAbs ( in float y );
+//   SVGPathSegLinetoVerticalRel    createSVGPathSegLinetoVerticalRel ( in float y );
+//   SVGPathSegCurvetoCubicSmoothAbs    createSVGPathSegCurvetoCubicSmoothAbs ( in float x, in float y, in float x2, in float y2 );
+//   SVGPathSegCurvetoCubicSmoothRel    createSVGPathSegCurvetoCubicSmoothRel ( in float x, in float y, in float x2, in float y2 );
+//   SVGPathSegCurvetoQuadraticSmoothAbs    createSVGPathSegCurvetoQuadraticSmoothAbs ( in float x, in float y );
+//   SVGPathSegCurvetoQuadraticSmoothRel    createSVGPathSegCurvetoQuadraticSmoothRel ( in float x, in float y );
+// };
+
+
+	
+	(function() {
+		empty();
+		
+		var path = makeEl('path');
+		var list;
+		
+		var resetList = function() {
+			path.setAttribute("d", "M1,2 L3,4");
+			list = path.pathSegList;
+		}
+		
+		var makeSeg = function(x, y) {
+			var seg = path.createSVGPathSegLinetoAbs(x, y);
+			return seg;
+		}
+
+		test("Claims support for SVGPathSegList", 1, function() {
+			ok("pathSegList" in path, "path has 'pathSegList' property");
+		});
+
+		test("Returns correct value for numberOfItems", 2, function() {
+			resetList();
+			ok("numberOfItems" in list, "SVGPathSegList has 'numberOfItems' property");
+			ok(list.numberOfItems === 2, "numberOfItems value is correct");
+		});		
+
+		test("Supports getItem()", 2, function() {
+			ok("getItem" in list, "SVGPathSegList has 'getItem' property");
+			
+			var item = list.getItem(0);
+			ok((item.x == 1 && item.y == 2), "getItem() values are correct");
+		});
+		
+		test("Can create segment", 1, function() {
+			ok(!!makeSeg(0, 0), "Created segment with createSVGPathSegLinetoAbs()");
+		});
+		
+		test("Supports appendItem()", 2, function() {
+			resetList();
+			
+			ok("appendItem" in list, "SVGPointList has 'appendItem' property");
+			
+			list.appendItem(makeSeg(10, 20));
+
+			if(list.numberOfItems === 3) {
+				var item = list.getItem(2);
+			} else {
+				var item = false;
+			}
+
+			ok(item && item.x == 10 && item.y == 20, "Supports appendItem()");
+		});
+
+		
+	}());
 	
 	module("SVGTransform");
 	

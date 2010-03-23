@@ -18,6 +18,7 @@
 		var pt = root.createSVGPoint();
 		pt.x = 200;
 		pt.y = 200;
+					console.log('pts',pts.getItem(0));
 		pts.replaceItem(pt, 1);
 		
 		// Just to make sure the "points" attribute has been correctly updated

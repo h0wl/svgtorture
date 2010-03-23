@@ -182,28 +182,28 @@
 		});		
 	}());
 	
-	module("SVGPathSegList");
-	
-	(function() {
-		empty();
-		
-		var path = makeEl('path');
-		
-		var resetList = function() {
-			polyline.setAttribute("points", "5,6 10,11");
-			pts = polyline.points;
-		}
-
-		test("Claims support for SVGPathSegList", 2, function() {
-			ok("pathSegList" in , "polyline has 'points' property");
-			ok(polygon.points, "polygon has 'points' property");
-		});
-
-		test("PathSegList interface", 1, function() {
-			ok(makeEl('path'), "Claims to support 'pathSegList' interface for <path/>");
-		});
-		
-	}());
+// 	module("SVGPathSegList");
+// 	
+// 	(function() {
+// 		empty();
+// 		
+// 		var path = makeEl('path');
+// 		
+// 		var resetList = function() {
+// 			polyline.setAttribute("points", "5,6 10,11");
+// 			pts = polyline.points;
+// 		}
+// 
+// 		test("Claims support for SVGPathSegList", 2, function() {
+// 			ok("pathSegList" in , "polyline has 'points' property");
+// 			ok(polygon.points, "polygon has 'points' property");
+// 		});
+// 
+// 		test("PathSegList interface", 1, function() {
+// 			ok(makeEl('path'), "Claims to support 'pathSegList' interface for <path/>");
+// 		});
+// 		
+// 	}());
 	
 	
 

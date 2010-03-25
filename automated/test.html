@@ -3,10 +3,9 @@
 <head>  
 	<title>SVG DOM 1.1 conformance tests</title>
   <link rel="stylesheet" href="qunit/qunit.css" type="text/css"/>  
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="qunit/qunit.js"></script>  
   <script type="text/javascript">
-  $(function() {
+  window.onload = function() {
   	// log function
   	QUnit.log = function(result, message) {
 		if (window.console && window.console.log) {
@@ -16,12 +15,12 @@
 	var svgroot;
 	var svgns = 'http://www.w3.org/2000/svg';
 	(function() {
-		var od = $("#svg")[0].ownerDocument;
+		var od = document.getElementById("svg").ownerDocument;
 		svgroot = od.createElementNS(svgns, "svg");
 		svgroot.setAttribute("width", 100);
 		svgroot.setAttribute("height", 100);
 		svgroot.setAttribute("xmlns", svgns);
-		$("#svg").append(svgroot);
+		document.getElementById("svg").appendChild(svgroot);
 	}());
 	
 	function makeEl(name) {
@@ -215,31 +214,47 @@
 //   float         getTotalLength (  );
 //   SVGPoint      getPointAtLength ( in float distance );
 //   unsigned long getPathSegAtLength ( in float distance );
-//   SVGPathSegClosePath    createSVGPathSegClosePath (  );
-//   SVGPathSegMovetoAbs    createSVGPathSegMovetoAbs ( in float x, in float y );
-//   SVGPathSegMovetoRel    createSVGPathSegMovetoRel ( in float x, in float y );
-//   SVGPathSegLinetoAbs    createSVGPathSegLinetoAbs ( in float x, in float y );
-//   SVGPathSegLinetoRel    createSVGPathSegLinetoRel ( in float x, in float y );
-//   SVGPathSegCurvetoCubicAbs    createSVGPathSegCurvetoCubicAbs ( in float x, in float y, in float x1, in float y1, in float x2, in float y2 );
-//   SVGPathSegCurvetoCubicRel    createSVGPathSegCurvetoCubicRel ( in float x, in float y, in float x1, in float y1, in float x2, in float y2 );
-//   SVGPathSegCurvetoQuadraticAbs    createSVGPathSegCurvetoQuadraticAbs ( in float x, in float y, in float x1, in float y1 );
-//   SVGPathSegCurvetoQuadraticRel    createSVGPathSegCurvetoQuadraticRel ( in float x, in float y, in float x1, in float y1 );
-//   SVGPathSegArcAbs    createSVGPathSegArcAbs ( in float x, in float y, in float r1, in float r2, in float angle, in boolean largeArcFlag, in boolean sweepFlag );
-//   SVGPathSegArcRel    createSVGPathSegArcRel ( in float x, in float y, in float r1, in float r2, in float angle, in boolean largeArcFlag, in boolean sweepFlag );
-//   SVGPathSegLinetoHorizontalAbs    createSVGPathSegLinetoHorizontalAbs ( in float x );
-//   SVGPathSegLinetoHorizontalRel    createSVGPathSegLinetoHorizontalRel ( in float x );
-//   SVGPathSegLinetoVerticalAbs    createSVGPathSegLinetoVerticalAbs ( in float y );
-//   SVGPathSegLinetoVerticalRel    createSVGPathSegLinetoVerticalRel ( in float y );
-//   SVGPathSegCurvetoCubicSmoothAbs    createSVGPathSegCurvetoCubicSmoothAbs ( in float x, in float y, in float x2, in float y2 );
-//   SVGPathSegCurvetoCubicSmoothRel    createSVGPathSegCurvetoCubicSmoothRel ( in float x, in float y, in float x2, in float y2 );
-//   SVGPathSegCurvetoQuadraticSmoothAbs    createSVGPathSegCurvetoQuadraticSmoothAbs ( in float x, in float y );
-//   SVGPathSegCurvetoQuadraticSmoothRel    createSVGPathSegCurvetoQuadraticSmoothRel ( in float x, in float y );
+
 // };
 
 
 	
 	(function() {
 		empty();
+		
+		var x = 1, y = 2, x1 = 3, y1 = 4, x2 = 5, y2 = 6;
+		var r1 = 7, r2 = 8, a = 9, laf = true, sf = false;
+		
+		var creates = {
+			'createSVGPathSegClosePath': {},
+			'createSVGPathSegMovetoAbs': {x:x, y:y},
+			'createSVGPathSegMovetoRel': {x:x, y:y},
+			'createSVGPathSegLinetoAbs': {x:x, y:y},
+			'createSVGPathSegLinetoRel': {x:x, y:y},
+			'createSVGPathSegCurvetoCubicAbs': {x:x, y:y, x1:x1, y1:y1, x2:x2, y2:y2},
+			'createSVGPathSegCurvetoCubicRel': {x:x, y:y, x1:x1, y1:y1, x2:x2, y2:y2},
+			'createSVGPathSegCurvetoQuadraticAbs': {x:x, y:y, x1:x1, y1:y1},
+			'createSVGPathSegCurvetoQuadraticRel': {x:x, y:y, x1:x1, y1:y1},
+			'createSVGPathSegArcAbs': {x:x, y:y, r1:r1, r2:r2, angle:a, largeArcFlag:laf, sweepFlag:sf},
+			'createSVGPathSegArcRel': {x:x, y:y, r1:r1, r2:r2, angle:a, largeArcFlag:laf, sweepFlag:sf},
+			'createSVGPathSegLinetoHorizontalAbs': {x:x},
+			'createSVGPathSegLinetoHorizontalRel': {x:x},
+			'createSVGPathSegLinetoVerticalAbs': {y:y},
+			'createSVGPathSegLinetoVerticalRel': {y:y},
+			'createSVGPathSegCurvetoCubicSmoothAbs': {x:x, y:y, x2:x2, y2:y2},
+			'createSVGPathSegCurvetoCubicSmoothRel': {x:x, y:y, x2:x2, y2:y2},
+			'createSVGPathSegCurvetoQuadraticSmoothAbs': {x:x, y:y},
+			'createSVGPathSegCurvetoQuadraticSmoothRel': {x:x, y:y}
+		};
+// 		var segData = {
+// 			2: ['x','y'],
+// 			4: ['x','y'],
+// 			6: ['x','y','x1','y1','x2','y2'],
+// 			8: ['x','y','x1','y1'],
+// 			10: ['x','y','r1','r2','angle','largeArcFlag','sweepFlag'],
+// 			12: ['x'],
+// 			14: ['y']
+// 		};
 		
 		var path = makeEl('path');
 		var list;
@@ -271,28 +286,187 @@
 			ok((item.x == 1 && item.y == 2), "getItem() values are correct");
 		});
 		
-		test("Can create segment", 1, function() {
-			ok(!!makeSeg(0, 0), "Created segment with createSVGPathSegLinetoAbs()");
+		var segments = [];
+		
+		test("Can create all segment types", function() {
+			var count = 0;
+			for(var fname in creates) {
+				var vals = creates[fname];
+				var arr = [];				
+				for(var v in vals) {
+					arr.push(vals[v]);
+				}
+				
+				// Create the segment
+				var seg = path[fname].apply(path, arr);
+				segments.push(seg);
+
+				if(fname == 'createSVGPathSegClosePath') {
+					count++;
+					ok(seg[v] == vals[v], "Created segment using " + fname);
+					continue;
+				}
+
+				// Test if all values are there
+				for(var v in vals) {
+					count++;
+					equals(seg[v], vals[v], "Created segment using " + fname + ", got correct value for: " + v);
+				}
+			}
+			expect(count);
 		});
 		
-		test("Supports appendItem()", 2, function() {
+		test("Supports appendItem()", 5, function() {
 			resetList();
 			
-			ok("appendItem" in list, "SVGPointList has 'appendItem' property");
-			
-			list.appendItem(makeSeg(10, 20));
+			ok("appendItem" in list, "SVGPathSegList has 'appendItem' property");
 
+			list.appendItem(makeSeg(-1, -2));
 			if(list.numberOfItems === 3) {
 				var item = list.getItem(2);
 			} else {
 				var item = false;
 			}
 
-			ok(item && item.x == 10 && item.y == 20, "Supports appendItem()");
+			ok(item && item.x == -1 && item.y == -2, "Supports appendItem()");
+
+			var seg_count = list.numberOfItems;
+			
+			for(var i=0; i<segments.length; i++) {
+				list.appendItem(segments[i]);
+				seg_count++;
+			}
+			
+			equals(seg_count, list.numberOfItems, "Gives correct number of items after adding all createable segments");
+
+// Values given by Firefox/Opera
+// M1,2 L3,4 L-1,-2 z L1,2 l1,2 C3,4 5,6 1,2 c3,4 5,6 1,2 Q3,4 1,2 q3,4 1,2 A7,8 9 1,0 1,2 a7,8 9 1,0 1,2 H1 h1 V2 v2 S5,6 1,2 s5,6 1,2 T1,2 t1,2
+// M 1 2 L 3 4L -1 -2ZM 1 2 m 1 2 L 1 2l 1 2C 3 4 5 6 1 2c 3 4 5 6 1 2Q 3 4 1 2q 3 4 1 2A 7 8 9 0 1 1 2a 7 8 9 0 1 1 2S 5 6 1 2s 5 6 1 2T 1 2t 1 2
+			
+			//alert(path.getAttribute('d'));
+			var d_attr = path.getAttribute('d');
+			
+			var correct_start = /^\s*M\s*1\s*,?\s*2\s*L\s*3\s*,?\s*4/.exec(d_attr);
+			
+			ok(correct_start, "'d' attribute starts correctly with initial values");
+			
+			// TODO: Make this regexp more complete
+			var correct_generated = /c\s*3\s*,?\s*4\s*5\s*,?\s*6\s*1\s*,?\s*2\s*Q/.exec(d_attr);
+			
+			ok(correct_generated, "'d' attribute correctly includes generated segment data");
+		});
+		
+		test("Supports insertItemBefore()", 3, function() {
+			resetList();
+
+			ok("insertItemBefore" in list, "SVGPathSegList has 'insertItemBefore' property");
+			
+			list.insertItemBefore(makeSeg(100, 200), 0);
+
+			var item = list.getItem(0);
+			ok(item.x == 100 && item.y == 200, "Supports insertItemBefore()");
+			
+			var d_attr = path.getAttribute('d');
+			
+			var correct_start = /^\s*L\s*100\s*,?\s*200\s*M/.exec(d_attr);
+			ok(correct_start, "'d' attribute starts correctly with generated values");
+		});
+		
+		test("Supports removeItem()", 3, function() {
+			resetList();
+	
+			ok("removeItem" in list, "SVGPathSegList has 'removeItem' property");
+			
+			list.removeItem(1);
+			
+			var item = list.getItem(0);
+			
+			ok(list.numberOfItems === 1 && item.x == 1 && item.y == 2, "Supports removeItem()");
+			
+			var d_attr = path.getAttribute('d');
+			
+			var no_removed_num = (d_attr.indexOf('3') === -1);
+			
+			ok(d_attr.indexOf('3') === -1, "'d' attribute does not include value that was removed");
+		});
+		
+		test("Supports clear()", 3, function() {
+			resetList();
+	
+			ok("clear" in list, "SVGPathSegList has 'clear' property");
+			
+			list.clear();
+			
+			ok(list.numberOfItems === 0, "Supports clear()");
+			
+			var d_attr = path.getAttribute('d');
+			
+			var correct_attr = /^\s*$/.exec(d_attr);
+			ok(correct_attr, "'d' attribute is empty or just whitespace");
+		});
+		
+		test("Supports initialize()", 3, function() {
+			resetList();
+	
+			ok("initialize" in list, "SVGPathSegList has 'initialize' property");
+			
+			list.initialize(makeSeg(1, 2));
+			
+			var item = list.getItem(0);
+			
+			ok(list.numberOfItems === 1 && item.x == 1 && item.y == 2, "Supports initialize()");
+			
+			var d_attr = path.getAttribute('d');
+			var correct_attr = /^\s*L\s*1\s*,?\s*2\s*$/.exec(d_attr);
+			ok(correct_attr, "'d' attribute is correct");
+		});		
+
+		module("SVGPathElement");
+		
+		test("Supports getTotalLength()", 2, function() {
+			resetList();
+			
+			ok("getTotalLength" in path, "Path has 'getTotalLength' property");
+			
+			var len = path.getTotalLength();
+			
+			equals(len, 2.8284270763397217, "Gave correct length of simple path");
+			
+			// TODO: Find out what the actual correct value should be for this, then test it.
+			path.setAttribute('d', 'M1,2 L3,4 L-1,-2 z L1,2 l1,2 C3,4 5,6 1,2 c3,4 5,6 1,2 Q3,4 1,2 q3,4 1,2 A7,8 9 1,0 1,2 a7,8 9 1,0 1,2 H1 h1 V2 v2 S5,6 1,2 s5,6 1,2 T1,2 t1,2 z');
+			var len = path.getTotalLength();
 		});
 
+		test("Supports getPointAtLength()", 3, function() {
+			resetList();
+			
+			path.setAttribute('d', 'M0,0 L0,5');
+			
+			ok("getPointAtLength" in path, "Path has 'getPointAtLength' property");
+			
+			var pt = path.getPointAtLength(3);
+			
+			// Should this be rounded? Webkit gives: 8.742277657347586e-8
+			equals(pt.x, 0, "Gave X value of point on simple path");
+			equals(pt.y, 3, "Gave Y value of point on simple path");
+		});
+		
+
+		test("Supports getPathSegAtLength()", 3, function() {
+			resetList();
+			
+			path.setAttribute('d', 'M0,0 L0,5 L0,10');
+			
+			ok("getPathSegAtLength" in path, "Path has 'getPathSegAtLength' property");
+			
+			var seg1 = path.getPathSegAtLength(3);
+			var seg2 = path.getPathSegAtLength(7);		
+			equals(seg1, 1, "Gave index of segment on simple path");
+			equals(seg2, 2, "Gave index of segment on simple path");
+		});
 		
 	}());
+	
 	
 	module("SVGTransform");
 	
@@ -303,7 +477,7 @@
 	});
 
 	
-  }); 
+  }; 
   </script>  
 </head>  
 <body>  

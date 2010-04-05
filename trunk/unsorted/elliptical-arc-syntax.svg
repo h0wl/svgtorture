@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg">
 <desc>This tests out the path syntax for elliptical arc, including the ability to not include a space or comma between the sweep-flag and the x coordinate (00 instead of 0,0). The test should show a green circle, not a red one.</desc>
 <g transform="translate(100,100)">
-  <path fill="red" d="M100,100 A50,50 0 1 0,0,100 A50,50 0 1 0,100,100 z"/>
-  <path fill="green" d="M100,100 A50,50 0 1 00,100 A50,50 0 1 0100,100 z"/>
+  <path fill="green" d="M100,100 A50,50 0 1 0,0,100 A50,50 0 1 0,100,100 z"/>
+  <path fill="red" d="M100,100 A50,50 0 1 00,100 A50,50 0 1 0100,100 z"/>
 </g>
 </svg>

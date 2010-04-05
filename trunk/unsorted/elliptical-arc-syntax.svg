@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(100,100)">
+  <path fill="red" d="M100,100 A50,50 0 1 0,0,100 A50,50 0 1 0,100,100 z"/>
+  <path fill="green" d="M100,100 A50,50 0 1 00,100 A50,50 0 1 0100,100 z"/>
+</g>
+</svg>

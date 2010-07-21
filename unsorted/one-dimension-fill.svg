@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 350">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="25 25 250 250">
 	<title>One dimension fill</title>
 	<desc>
-		Test filling in one dimension shapes: "line" elements, as well as specific "polyline" and "path",
-		which although counter-intuitive, is performed in at least one implementation.
+		Test filling in one dimension shapes ("line" elements as well as particular cases of
+		"polyline", "path", "rect", etc.), which although counter-intuitive, is performed in
+		at least one implementation.
 		
 		Specifically regarding the line:
 			"Because 'line' elements are single lines and thus are geometrically one-dimensional,
@@ -10,11 +11,16 @@
 		Nevertheless, ASV ignores this and "fills" the line by creating an additional,
 		very thin stroke below the actual stroke. Even when stroke is defined it becomes visible:
 		for example in dashed array lines, where the gaps show the symptom, as well as in very thin
-		lines and/or zoomed out images (where the anti-aliasing kicks off and the line "fill" color
-		blends with the line stroke color).
+		lines and/or scaled down/zoomed out images, where the anti-aliasing kicks off and the line
+		"fill" color blends with the line stroke color.
 		
 		ASV can be worked around by setting the "fill" attribute to "none" in these shapes. Note that
-		if "fill" isn't specified, ASV assumes the default value which is "black" [2].
+		if "fill" isn't specified, ASV assumes the default value which is "black" [2]. Another possible
+		workaround, for the anti-aliasing side effect only, is to set the "shape-rendering" property [3]
+		to "crispEdges", which basically disables anti-aliasing and can be easily simulated by toggling
+		the "Higher quality" setting found in the context menu.
+		
+		This seems to be a long known issue (highly related thread [4] dating from 2002).
 		
 		Pass criteria:
 			- No red should be visible.
@@ -31,15 +37,24 @@
 		References:
 			[1] http://www.w3.org/TR/SVG11/shapes.html#LineElement
 			[2] http://www.w3.org/TR/SVG11/painting.html#FillProperty
+			[3] http://www.w3.org/TR/SVG11/painting.html#ShapeRenderingProperty
+			[4] http://lists.w3.org/Archives/Public/www-svg/2002Nov/0113.html
 	</desc>
-	<line x1="50" y1="50" x2="250" y2="50" stroke="none" fill="red" />
-	<polyline points="50,100 250,100" stroke="none" fill="red" />
-	<path d="M50,150 h200" stroke="none" fill="red" />
+	<!-- light out the canvas for better contrast -->
+	<rect x="25" y="25" width="250" height="250" stroke="none" fill="black" />
 	
-	<!-- in ASV, this line is displayed magenta when zoomed out -->
+	<!-- note that, in all cases, the shape's area equals zero therefore no fill should occur -->
+	<line x1="50" y1="50" x2="250" y2="50" stroke="none" fill="red" />
+	<polyline points="50,75 250,75" stroke="none" fill="red" />
+	<path d="M50,100 h200" stroke="none" fill="red" />
+	<rect x="50" y="125" width="200" height="0" stroke="none" fill="red" />
+	<ellipse cx="150" cy="150" rx="100" ry="0" stroke="none" fill="red" />
+	<polygon points="50,175 250,175" stroke="none" fill="red" />
+	
+	<!-- in ASV, this line is displayed magenta when scaled down and/or zoomed out -->
 	<line x1="50" y1="200" x2="250" y2="200" stroke="blue" stroke-width="1" fill="red" />
-	<!-- (for comparison only) -->
-	<line x1="50" y1="250" x2="250" y2="250" stroke="blue" stroke-width="1" fill="none" />
+	<!-- this line displays as expected (contains the ASV workaround and is meant to provide visual comparison) -->
+	<line x1="50" y1="225" x2="250" y2="225" stroke="blue" stroke-width="1" fill="none" />
 	<!-- in ASV, this line displays red in the dash gaps -->
-	<line x1="50" y1="300" x2="250" y2="300" stroke="blue" stroke-width="1" stroke-dasharray="5, 5" fill="red" />
+	<line x1="50" y1="250" x2="250" y2="250" stroke="blue" stroke-width="1" stroke-dasharray="5, 5" fill="red" />
 </svg>

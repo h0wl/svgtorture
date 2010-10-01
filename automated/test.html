@@ -37,7 +37,14 @@
 	
 
 	module("DOM manipulation");
-	
+
+	test("Supports SVGElement", 4, function() {
+		ok(SVGElement != undefined, "SVGElement is available");
+		ok(typeof SVGElement == typeof Element, "SVGElement is the same type as Element");
+		ok(SVGElement.prototype != undefined, "SVGElement.prototype is available");
+		ok(typeof SVGElement.prototype == typeof Element.prototype, "SVGElement.prototype is the same type as Element.prototype");
+	});
+
 	test("Can do basic node editing", 2, function() {
 		empty();
 		var rect = makeEl("rect");
@@ -177,7 +184,7 @@
 			pts.initialize(makePt(2,3));
 			var item = pts.numberOfItems == 1 ? pts.getItem(0) : false;
 			ok(item && item.x == 2 && item.y == 3, "Supports initialize()");
-		});		
+		});
 	}());
 	
 

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="19000 18880 2000 2120">
+	<title>Text stroking with large coordinates</title>
+	<desc>
+		Text stroking with large coordinates involved triggers an issue in ASV.
+		Apparently viewBox and other coordinate/view-related attributes don't seem to have any impact,
+		the issue is triggered whenever the user coordinates (x or y) are equal to or larger than 20000.
+		
+		Pass criteria:
+			- No relevant areas of red should be visible (i.e., only a very thin stroke).
+		
+		Passes:
+			- Mozilla Firefox (8.0, 11.0a1);
+			- Internet Explorer (9.0).
+		
+		Fails:
+			- Adobe SVG Viewer (3.03).
+	</desc>
+	<g font-size="120" font-family="Arial, sans-serif" stroke="red" fill="blue" stroke-width="1">
+		<text x="19000" y="19000">(19000,19000)</text>
+		<!-- ASV3 breaks here and beyond -->
+		<text x="21000" y="19000" text-anchor="end">(21000,19000)</text>
+		<text x="20000" y="20000" text-anchor="middle">(20000,20000)</text>
+		<text x="19000" y="21000">(19000,21000)</text>
+		<text x="21000" y="21000" text-anchor="end">(21000,21000)</text>
+	</g>
+</svg>
